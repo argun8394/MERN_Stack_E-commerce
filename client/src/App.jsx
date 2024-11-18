@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       {/* common component */}
-      <h1>Header Component</h1>
+      <h1 >Header Component</h1>
 
       <Routes>
         <Route path="/auth" element={<AuthLayout/>}>
