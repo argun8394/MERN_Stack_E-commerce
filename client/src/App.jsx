@@ -19,10 +19,11 @@ import UnauthPage from "./pages/unauth-page";
 
 function App() {
   const isAuthenticated = false;
-  const user = {
-    name: '',
-    role: ''
-  };
+  const user = null;
+  // const user = {
+  //   name: 'Ali',
+  //   role: 'admin'
+  // };
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -62,7 +63,7 @@ function App() {
         </Route>
         <Route path="/shop" element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-          <ShoppingLayout /> 
+            <ShoppingLayout />
           </CheckAuth>}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
