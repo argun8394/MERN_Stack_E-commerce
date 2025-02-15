@@ -1,10 +1,12 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const cookieParser = require('cookie-parser')
-const cors = require('cors')
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const authRouter = require('./routes/auth/auth-routes')
 
 //create a database connection
-mongoose.connect('mongodb+srv://argunali:Hrrn151263.@cluster0.6suji.mongodb.net/')
+mongoose.connect(process.env.MONGO_URI)
     .then(() =>console.log('MongoDB connected'))
     .catch((error) => console.error(error));
 
@@ -22,5 +24,6 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
+app.use('/api/auth', authRouter)
 
 app.listen(PORT, ()=>console.log(`Server is now running on port ${PORT}`));
