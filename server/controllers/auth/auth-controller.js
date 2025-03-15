@@ -54,19 +54,19 @@ const loginUser = async (req, res) => {
         })
 
         const token = jwt.sign({
-            id: checkUser._id, role : checkUser.role, email : checkUser.email 
-        }, 'CLIENT_SECRET_KEY', {expiresIn : '60m'})
+            id: checkUser._id, role: checkUser.role, email: checkUser.email
+        }, 'CLIENT_SECRET_KEY', { expiresIn: '60m' })
 
-        res.cookie('token', token, {httpOnly: true, secure : false}).json({
-            success : true,
-            message : 'Logged in successfully',
+        res.cookie('token', token, { httpOnly: true, secure: false }).json({
+            success: true,
+            message: 'Logged in successfully',
             user: {
-                email : checkUser.email,
-                role : checkUser.role,
-                id : checkUser._id
+                email: checkUser.email,
+                role: checkUser.role,
+                id: checkUser._id
             }
         })
-        
+
     } catch (e) {
         console.log(e);
         res.status(500).json({
@@ -80,6 +80,32 @@ const loginUser = async (req, res) => {
 
 // logout
 
+const logoutUser = (req, res) => {
+    res.clearCookie('token').json({
+        success: true,
+        message: 'Logged out succesfully!'
+    })
+}
+
 
 //auth middleware
-module.exports = { registerUser, loginUser };
+const authMiddleware = async (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({
+        success: false,
+        message: 'Unauthorised user!'
+    })
+
+    try {
+        const decoded = jwt.verify(token, 'CLIENT_SECRET_KEY');
+        req.user = decoded;
+        next()
+    } catch (error) {
+        res.status(401).json({
+            success: false,
+            message: 'Unauthorised user!'
+        })
+    }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, authMiddleware };
